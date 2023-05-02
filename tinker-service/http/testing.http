@@ -3,7 +3,7 @@ Content-Type: application/json
 
 {
     "containerName": "hello-database",
-    "vendor": "postgreas",
+    "vendor": "postgres",
     "defaultDatabase": "tinkerdb",
     "username": "postgres",
     "password": "password",

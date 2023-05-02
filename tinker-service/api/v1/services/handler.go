@@ -1,12 +1,18 @@
 package services
 
 import (
+	"context"
 	"database/sql"
 	"encoding/json"
 	"fmt"
 	"log"
 	"net/http"
 	"time"
+
+	"github.com/docker/docker/api/types"
+	"github.com/docker/docker/api/types/container"
+	"github.com/docker/docker/client"
+	"github.com/saint-rivers/tinker/config"
 )
 
 type DatabaseServiceRequest struct {
@@ -28,7 +34,31 @@ type DatabaseService struct {
 	Port            string `json:"port"`
 }
 
+// func GetDockerClient() *client.Client {
+// 	cli, err := client.NewClientWithOpts(client.FromEnv)
+// 	if err != nil {
+// 		panic(err)
+// 	}
+
+// 	// containers, err := cli.ContainerList(context.Background(), types.ContainerListOptions{})
+// 	// if err != nil {
+// 	// 	panic(err)
+// 	// }
+
+// 	// for _, container := range containers {
+// 	// 	fmt.Printf("%s %s\n", container.ID[:10], container.Image)
+// 	// }
+
+// 	return cli
+// }
+
+func mapToContainerConfig(req *DatabaseServiceRequest) *container.Config {
+	return &container.Config{Hostname: req.ContainerName}
+}
+
 func CreateService(db *sql.DB) http.HandlerFunc {
+	// dockerClient := config.GetDockerClient()
+
 	return func(w http.ResponseWriter, r *http.Request) {
 		var dbRequest DatabaseServiceRequest
 		json.NewDecoder(r.Body).Decode(&dbRequest)
@@ -49,8 +79,8 @@ func CreateService(db *sql.DB) http.HandlerFunc {
 			log.Println(err.Err().Error())
 			return
 		}
-
 		fmt.Print(err)
+		// dockerClient.ContainerCreate(context.Background(), mapToContainerConfig(&dbRequest))
 		json.NewEncoder(w).Encode(dbRequest)
 	}
 }

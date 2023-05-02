@@ -2,9 +2,11 @@ package config
 
 import (
 	"database/sql"
+	"log"
+
+	"github.com/docker/docker/client"
 	_ "github.com/lib/pq"
 	"github.com/saint-rivers/tinker/env"
-	"log"
 )
 
 func GetDBConnection() *sql.DB {
@@ -14,4 +16,12 @@ func GetDBConnection() *sql.DB {
 	}
 	// defer db.Close()
 	return db
+}
+
+func GetDockerClient() *client.Client {
+	cli, err := client.NewClientWithOpts(client.FromEnv)
+	if err != nil {
+		panic(err)
+	}
+	return cli
 }
