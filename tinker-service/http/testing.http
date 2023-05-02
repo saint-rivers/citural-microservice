@@ -1,0 +1,11 @@
+POST http://localhost:8010/api/v1/services
+Content-Type: application/json
+
+{
+    "containerName": "hello-database",
+    "vendor": "postgreas",
+    "defaultDatabase": "tinkerdb",
+    "username": "postgres",
+    "password": "password",
+    "port": "7878"
+}

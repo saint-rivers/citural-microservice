@@ -1,0 +1,12 @@
+version: "3.8"
+
+services:
+  paranoia-db:
+    image: postgres:14.4-alpine
+    container_name: tinker-db
+    environment:
+      - POSTGRES_DB=tinker
+      - POSTGRES_USER=tinkerer
+      - POSTGRES_PASSWORD=password
+    ports:
+      - "4666:5432"
