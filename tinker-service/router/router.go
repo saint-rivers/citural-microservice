@@ -5,7 +5,7 @@ import (
 
 	"github.com/gorilla/mux"
 	"github.com/saint-rivers/tinker/api/database"
-	"github.com/saint-rivers/tinker/api/healthcheck"
+	"github.com/saint-rivers/tinker/api/health"
 )
 
 func EnableHealthcheckRoutes(db *sql.DB, router *mux.Router) {
