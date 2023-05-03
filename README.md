@@ -12,3 +12,5 @@ sudo mv migrate.linux-amd64 $GOPATH/bin/migrate
 References for Golang Migrate: <https://github.com/golang-migrate/migrate/releases>
 
 [Golang CRUD REST API](https://dev.to/francescoxx/build-a-crud-rest-api-in-go-using-mux-postgres-docker-and-docker-compose-2a75)
+
+Keycloak with Golang: <https://levelup.gitconnected.com/building-micro-services-in-go-using-keycloak-for-authorisation-e00a29b80a43>
