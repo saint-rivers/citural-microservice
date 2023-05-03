@@ -5,7 +5,6 @@ import (
 	"encoding/json"
 	"log"
 	"net/http"
-	"time"
 
 	"github.com/saint-rivers/tinker/api/container"
 	"github.com/saint-rivers/tinker/common"
@@ -20,10 +19,7 @@ func CreateService(db *sql.DB) http.HandlerFunc {
 		row := InsertDatabaseRequest(db, &req)
 
 		if row.Err() != nil {
-			var errorResponse = map[string]string{
-				"message":   "unable to create database service",
-				"timestamp": time.Now().Local().Format("2006-01-02T15:04:05Z07:00"),
-			}
+			var errorResponse map[string]string = errorCreateDatabaseService
 			json.NewEncoder(w).Encode(errorResponse)
 			log.Println(row.Err().Error())
 			return
