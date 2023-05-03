@@ -31,11 +31,9 @@ type PortMappings struct {
 // }
 
 func CreateDatabaseContainer(r *request.DatabaseServiceRequest) container.CreateResponse {
-	db := ConfigPostgres(r)
+	c := ConfigPostgres(r)
 
-	container, err := cli.ContainerCreate(
-		ctx, db.ContainerConfig, db.HostConfig, db.NetworkConfig, nil, db.ContainerName,
-	)
+	container, err := cli.ContainerCreate(ctx, c.ContainerConfig, c.HostConfig, c.NetworkConfig, nil, c.ContainerName)
 	if err != nil {
 		log.Println(err)
 	}

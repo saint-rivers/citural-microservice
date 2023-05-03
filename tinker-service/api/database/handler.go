@@ -3,7 +3,6 @@ package database
 import (
 	"database/sql"
 	"encoding/json"
-	"log"
 	"net/http"
 
 	"github.com/saint-rivers/tinker/api/container"
@@ -16,14 +15,14 @@ func CreateService(db *sql.DB) http.HandlerFunc {
 		var req request.DatabaseServiceRequest
 		json.NewDecoder(r.Body).Decode(&req)
 
-		row := InsertDatabaseRequest(db, &req)
+		// row := InsertDatabaseRequest(db, &req)
 
-		if row.Err() != nil {
-			var errorResponse map[string]string = errorCreateDatabaseService
-			json.NewEncoder(w).Encode(errorResponse)
-			log.Println(row.Err().Error())
-			return
-		}
+		// if row.Err() != nil {
+		// 	var errorResponse map[string]string = errorCreateDatabaseService
+		// 	json.NewEncoder(w).Encode(errorResponse)
+		// 	log.Println(row.Err().Error())
+		// 	return
+		// }
 
 		c := container.CreateDatabaseContainer(&req)
 		container.StartDatabaseContainer(c.ID)
