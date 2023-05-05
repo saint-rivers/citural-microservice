@@ -1,16 +1,16 @@
 package main
 
 import (
-	"database/sql"
 	"fmt"
 	"log"
 	"net/http"
 
 	"github.com/gorilla/mux"
 	"github.com/rs/cors"
+
 	"github.com/saint-rivers/tinker/config"
 	"github.com/saint-rivers/tinker/env"
-	"github.com/saint-rivers/tinker/router"
+	"github.com/saint-rivers/tinker/routes"
 )
 
 func configureCors(router *mux.Router) http.Handler {
@@ -24,13 +24,8 @@ func configureCors(router *mux.Router) http.Handler {
 }
 
 func startServer(handler http.Handler) {
-	fmt.Printf("listening on %s", env.LISTEN_ADDRESS)
+	fmt.Printf("listening on %s\n", env.LISTEN_ADDRESS)
 	log.Fatal(http.ListenAndServe(env.LISTEN_ADDRESS, handler))
-}
-
-func configureRoutes(db *sql.DB, router *mux.Router) {
-	routes.EnableHealthcheckRoutes(db, router)
-	routes.EnableServiceRoutes(db, router)
 }
 
 func main() {
@@ -39,7 +34,7 @@ func main() {
 
 	// handle routing
 	router := mux.NewRouter()
-	configureRoutes(db, router)
+	routes.RegisterRoutes(db, router)
 
 	// server config
 	handler := configureCors(router)

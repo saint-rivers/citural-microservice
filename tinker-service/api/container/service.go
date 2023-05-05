@@ -21,15 +21,6 @@ type PortMappings struct {
 	ContainerPort string
 }
 
-// type DbContainer struct {
-// 	ContainerName string
-// 	Image         string
-// 	Tag           string `default:"latest"`
-// 	Network       string `default:"bridge"`
-// 	PortMappings  []PortMappings
-// 	Env           []string
-// }
-
 func CreateDatabaseContainer(r *request.DatabaseServiceRequest) container.CreateResponse {
 	c := ConfigPostgres(r)
 
@@ -40,7 +31,14 @@ func CreateDatabaseContainer(r *request.DatabaseServiceRequest) container.Create
 	return container
 }
 
-func StartDatabaseContainer(cid string) {
-	cli.ContainerStart(ctx, cid, types.ContainerStartOptions{})
-	log.Printf("Container %s is created", cid)
+func StartDatabaseContainer(cid string) error {
+	err := cli.ContainerStart(ctx, cid, types.ContainerStartOptions{})
+	log.Printf("Container %s is started", cid)
+	return err
+}
+
+func StopDatabaseContainer(cid string) error {
+	err := cli.ContainerStop(ctx, cid, container.StopOptions{})
+	log.Printf("Container %s is stopped", cid)
+	return err
 }

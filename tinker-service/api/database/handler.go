@@ -1,15 +1,17 @@
 package database
 
 import (
-	"database/sql"
 	"encoding/json"
+	"log"
 	"net/http"
+	"net/url"
 
+	"github.com/fatih/structs"
 	"github.com/saint-rivers/tinker/api/container"
-	"github.com/saint-rivers/tinker/common"
+	request "github.com/saint-rivers/tinker/common"
 )
 
-func CreateService(db *sql.DB) http.HandlerFunc {
+func CreateService() http.HandlerFunc {
 
 	return func(w http.ResponseWriter, r *http.Request) {
 		var req request.DatabaseServiceRequest
@@ -25,8 +27,59 @@ func CreateService(db *sql.DB) http.HandlerFunc {
 		// }
 
 		c := container.CreateDatabaseContainer(&req)
-		container.StartDatabaseContainer(c.ID)
+		err := container.StartDatabaseContainer(c.ID)
+		if err != nil {
+			log.Panic("unable to start container")
+		}
 
-		json.NewEncoder(w).Encode(req)
+		response := structs.Map(req)
+		response["containerId"] = c.ID
+		json.NewEncoder(w).Encode(response)
+	}
+}
+
+func getContainerQuery(q *url.Values) (string, string) {
+	status := q.Get("status")
+	cid := q.Get("container")
+	if status == "" {
+		log.Panic("no status provided")
+	}
+	if cid == "" {
+		log.Panic("container id not provided")
+	}
+
+	return status, cid
+}
+
+func ManageService() http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		q := r.URL.Query()
+		status, cid := getContainerQuery(&q)
+
+		var err error
+		var message string
+
+		switch status {
+		case "up":
+			err = container.StartDatabaseContainer(cid)
+			if err != nil {
+				message = "unable to start container"
+				json.NewEncoder(w).Encode(ContainerError(message))
+				return
+			}
+			success := ContainerSuccess(cid, status)
+			json.NewEncoder(w).Encode(success)
+
+		case "down":
+			err = container.StopDatabaseContainer(cid)
+			if err != nil {
+				message = "unable to stop container"
+				json.NewEncoder(w).Encode(ContainerError(message))
+				return
+			}
+			success := ContainerSuccess(cid, status)
+			json.NewEncoder(w).Encode(success)
+		}
+
 	}
 }
