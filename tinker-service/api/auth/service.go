@@ -4,6 +4,8 @@ import (
 	"encoding/json"
 	"net/http"
 	"strings"
+
+	"github.com/saint-rivers/tinker/env"
 )
 
 type LoginResponse struct {
@@ -11,7 +13,8 @@ type LoginResponse struct {
 }
 
 func Protect(next http.Handler) http.Handler {
-	InitializeOauthServer()
+	// env.LoadEnv()
+	client := InitializeOauthServer()
 
 	handler := func(w http.ResponseWriter, r *http.Request) {
 		authHeader := r.Header.Get("Authorization")
@@ -22,7 +25,7 @@ func Protect(next http.Handler) http.Handler {
 		}
 
 		accessToken := strings.Split(authHeader, " ")[1]
-		rptResult, err := client.RetrospectToken(r.Context(), accessToken, clientId, clientSecret, realm)
+		rptResult, err := client.RetrospectToken(r.Context(), accessToken, env.ClientId, env.ClientSecret, env.Realm)
 
 		if err != nil {
 			w.WriteHeader(400)

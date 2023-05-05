@@ -1,28 +1,13 @@
 package auth
 
 import (
-	"os"
-
 	"github.com/Nerzal/gocloak/v13"
+	"github.com/saint-rivers/tinker/env"
 )
 
-var (
-	// clientId     = os.Getenv("CLIENT_ID")
-	// clientSecret = os.Getenv("CLIENT_SECRET")
-	// realm        = os.Getenv("REALM")
-	// hostname     = os.Getenv("HOST")
-	clientId     string
-	clientSecret string
-	realm        string
-	hostname     string
-)
 var client gocloak.GoCloak
 
-func InitializeOauthServer() {
-	clientId = os.Getenv("CLIENT_ID")
-	clientSecret = os.Getenv("CLIENT_SECRET")
-	realm = os.Getenv("REALM")
-	hostname = os.Getenv("HOST")
-	
-	client = *gocloak.NewClient(hostname)
+func InitializeOauthServer() *gocloak.GoCloak {
+	client = *gocloak.NewClient(env.Hostname)
+	return &client
 }
