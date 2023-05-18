@@ -6,8 +6,9 @@ import (
 	"net/http"
 	"net/url"
 
+	// "github.com/docker/docker/integration-cli/cli"
 	"github.com/fatih/structs"
-	"github.com/saint-rivers/tinker/api/container"
+	"github.com/saint-rivers/tinker/app/container"
 	request "github.com/saint-rivers/tinker/common"
 )
 
@@ -49,6 +50,16 @@ func getContainerQuery(q *url.Values) (string, string) {
 	}
 
 	return status, cid
+}
+
+func ListContainers() http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		containers, err := container.ListContainers()
+		if err != nil {
+			log.Fatal("unable to list containers")
+		}
+		json.NewEncoder(w).Encode(containers)
+	}
 }
 
 func ManageService() http.HandlerFunc {

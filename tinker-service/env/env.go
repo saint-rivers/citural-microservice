@@ -7,9 +7,9 @@ var (
 	ALLOWED_ORIGINS = "*"
 	LISTEN_ADDRESS  = ":8010"
 
-	ClientId     = "tinker-microservice-client"
-	ClientSecret = "02szvWBHvNXnvvRrj9k7lyKzUSYzpr76"
-	Realm        = "citural-app"
+	ClientId     = "citural-microservice"
+	ClientSecret = "3aUXKqK9ac1rdoHZSsZ6XN9ZvefSSOjn"
+	Realm        = "citural"
 	Hostname     = "http://localhost:8800/"
 )
 

@@ -15,10 +15,12 @@ import (
 
 func configureCors(router *mux.Router) http.Handler {
 	c := cors.New(cors.Options{
+		AllowedHeaders:   []string{"*"},
 		AllowedOrigins:   []string{env.ALLOWED_ORIGINS},
-		AllowCredentials: true,
 		AllowedMethods:   []string{"GET", "HEAD", "POST", "PUT", "OPTIONS"},
+		AllowCredentials: true,
 	})
+	fmt.Printf("setting allowed origins %s\n", env.ALLOWED_ORIGINS)
 	handler := c.Handler(router)
 	return handler
 }

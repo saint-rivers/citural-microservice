@@ -8,6 +8,7 @@ import (
 )
 
 func RegisterDatabaseServiceRoutes(db *sql.DB, router *mux.Router) {
+	router.Handle("/api/v1/services", ListContainers()).Methods("GET")
 	router.Handle("/api/v1/services", sec.Protect(CreateService())).Methods("POST")
 	router.Handle("/api/v1/services", sec.Protect(ManageService())).Methods("PUT")
 }
