@@ -4,7 +4,7 @@ package env
 
 var (
 	DATABASE_URL    = "postgres://tinkerer:password@localhost:4666/tinker?sslmode=disable"
-	ALLOWED_ORIGINS = "*"
+	ALLOWED_ORIGINS = "http://localhost:4200"
 	LISTEN_ADDRESS  = ":8010"
 
 	ClientId     = "citural-microservice"
