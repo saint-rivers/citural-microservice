@@ -30,7 +30,7 @@ public class TopicServiceImpl implements TopicService {
 
     @Override
     public List<Topic> getByCourseId(String courseId) {
-        return topicRepository.selectWhereCourseIdIs(courseId);
+        return topicRepository.findIsNotDeletedByCourseIdExcludingChanges(courseId);
     }
 
     @Override
