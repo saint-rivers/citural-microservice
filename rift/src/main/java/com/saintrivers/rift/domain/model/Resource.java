@@ -1,4 +1,4 @@
-package com.saintrivers.rift.domain;
+package com.saintrivers.rift.domain.model;
 
 import java.util.List;
 

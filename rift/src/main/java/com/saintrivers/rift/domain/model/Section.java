@@ -1,4 +1,4 @@
-package com.saintrivers.rift.domain;
+package com.saintrivers.rift.domain.model;
 
 import java.util.List;
 
@@ -13,4 +13,5 @@ public class Section {
     private String name;
     private List<ResearchPoint> researchPoints;
     private List<Resource> resources;
+    private Integer index;
 }

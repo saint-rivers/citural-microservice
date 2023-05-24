@@ -1,4 +1,4 @@
-package com.saintrivers.rift.domain;
+package com.saintrivers.rift.domain.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
