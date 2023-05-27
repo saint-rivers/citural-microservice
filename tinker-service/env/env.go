@@ -8,7 +8,7 @@ var (
 	LISTEN_ADDRESS  = ":8010"
 
 	ClientId     = "citural-microservice"
-	ClientSecret = "3aUXKqK9ac1rdoHZSsZ6XN9ZvefSSOjn"
+	ClientSecret = "wV66R0Q2Y1Q1SERS5bty4Igq41x6HGYw"
 	Realm        = "citural"
 	Hostname     = "http://localhost:8800/"
 )
