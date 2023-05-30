@@ -1,6 +1,19 @@
 version: "3.8"
 
+volumes:
+  tinker_data:
+
+
 services:
+  citural-tinker-service:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:rw
+    ports:
+      - "8010:8010"
+
   citural-tinker-db:
     image: postgres:14.4-alpine
     container_name: tinker-db
@@ -8,6 +21,7 @@ services:
       - POSTGRES_DB=tinker
       - POSTGRES_USER=tinkerer
       - POSTGRES_PASSWORD=password
+    volumes:
+      - tinker_data:/var/lib/postgresql/data
     ports:
       - "4666:5432"
-      
