@@ -1,34 +1,46 @@
 package database
 
 import (
+	"database/sql"
 	"encoding/json"
+	"fmt"
 	"log"
 	"net/http"
 	"net/url"
 
 	// "github.com/docker/docker/integration-cli/cli"
 	"github.com/fatih/structs"
+	"github.com/saint-rivers/tinker/api/auth"
 	"github.com/saint-rivers/tinker/app/container"
 	request "github.com/saint-rivers/tinker/common"
 )
 
-func CreateService() http.HandlerFunc {
+func CreateService(db *sql.DB) http.HandlerFunc {
 
 	return func(w http.ResponseWriter, r *http.Request) {
 		var req request.DatabaseServiceRequest
 		json.NewDecoder(r.Body).Decode(&req)
 
 		// row := InsertDatabaseRequest(db, &req)
-
 		// if row.Err() != nil {
-		// 	var errorResponse map[string]string = errorCreateDatabaseService
+		// 	var errorResponse map[string]string
 		// 	json.NewEncoder(w).Encode(errorResponse)
 		// 	log.Println(row.Err().Error())
 		// 	return
 		// }
 
+		user, err := auth.ExtractKeycloakClaims(r)
+		if err != nil {
+			w.WriteHeader(400)
+			json.NewEncoder(w).Encode(auth.BadRequestError(err.Error()))
+			return
+		}
+
+		normalizedContainerName := fmt.Sprintf("%s-%v", *user.Sub, req.ContainerName)
+		req.SetContainerName(normalizedContainerName)
+
 		c := container.CreateDatabaseContainer(&req)
-		err := container.StartDatabaseContainer(c.ID)
+		err = container.StartDatabaseContainer(c.ID)
 		if err != nil {
 			log.Panic("unable to start container")
 		}
@@ -59,6 +71,18 @@ func ListContainers() http.HandlerFunc {
 			log.Fatal("unable to list containers")
 		}
 		json.NewEncoder(w).Encode(containers)
+	}
+}
+
+func RemoveContainer() http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		q := r.URL.Query()
+		cid := q.Get("container")
+		err := container.RemoveContainer(cid)
+		if err != nil {
+			log.Fatal("unable to list containers")
+		}
+		json.NewEncoder(w).Encode(ContainerSuccess(cid, "success"))
 	}
 }
 

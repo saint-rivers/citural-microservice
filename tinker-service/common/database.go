@@ -8,3 +8,7 @@ type DatabaseServiceRequest struct {
 	Password        string `json:"password"`
 	Port            string `json:"port"`
 }
+
+func (r *DatabaseServiceRequest) SetContainerName(name string) {
+	r.ContainerName = name
+}

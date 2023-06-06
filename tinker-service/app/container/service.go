@@ -76,3 +76,9 @@ func ListContainers() ([]ContainerResponse, error) {
 
 	return containers, nil
 }
+
+func RemoveContainer(cid string) error {
+	err := cli.ContainerRemove(ctx, cid, types.ContainerRemoveOptions{})
+	log.Printf("Container %s is stopped", cid)
+	return err
+}

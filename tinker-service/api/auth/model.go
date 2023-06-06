@@ -5,9 +5,8 @@ import (
 	"github.com/saint-rivers/tinker/env"
 )
 
-var client gocloak.GoCloak
+var Client gocloak.GoCloak
 
-func InitializeOauthServer() *gocloak.GoCloak {
-	client = *gocloak.NewClient(env.Hostname)
-	return &client
+func InitializeOauthServer() {
+	Client = *gocloak.NewClient(env.Hostname)
 }

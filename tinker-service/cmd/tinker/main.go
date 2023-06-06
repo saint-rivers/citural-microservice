@@ -8,6 +8,7 @@ import (
 	"github.com/gorilla/mux"
 	"github.com/rs/cors"
 
+	"github.com/saint-rivers/tinker/api/auth"
 	"github.com/saint-rivers/tinker/config"
 	"github.com/saint-rivers/tinker/env"
 	"github.com/saint-rivers/tinker/routes"
@@ -33,6 +34,7 @@ func startServer(handler http.Handler) {
 func main() {
 	// database connection
 	db := config.GetDBConnection()
+	auth.InitializeOauthServer()
 
 	// handle routing
 	router := mux.NewRouter()
